@@ -268,6 +268,8 @@ internal class PluginInstallerWindow : Window, IDisposable
     /// <inheritdoc/>
     public override void OnOpen()
     {
+        Service<Fools24>.Get().NotifyInstallerWindowOpened();
+        
         var pluginManager = Service<PluginManager>.Get();
 
         _ = pluginManager.ReloadPluginMastersAsync();
@@ -2458,6 +2460,12 @@ internal class PluginInstallerWindow : Window, IDisposable
                 }
             }
 
+            if (plugin is LocalDevPlugin devPlugin)
+            {
+                this.DrawDevPluginValidationIssues(devPlugin);
+                ImGuiHelpers.ScaledDummy(5);
+            }
+
             // Controls
             this.DrawPluginControlButton(plugin, availablePluginUpdate);
             this.DrawDevPluginButtons(plugin);
@@ -2958,6 +2966,100 @@ internal class PluginInstallerWindow : Window, IDisposable
         if (ImGui.IsItemHovered())
         {
             ImGui.SetTooltip(Locs.FeedbackModal_Title);
+        }
+    }
+
+    private void DrawDevPluginValidationIssues(LocalDevPlugin devPlugin)
+    {
+        if (!devPlugin.IsLoaded)
+        {
+            ImGuiHelpers.SafeTextColoredWrapped(ImGuiColors.DalamudGrey, "You have to load this plugin to see validation issues.");
+        }
+        else
+        {
+            var problems = PluginValidator.CheckForProblems(devPlugin);
+            if (problems.Count == 0)
+            {
+                ImGui.PushFont(InterfaceManager.IconFont);
+                ImGui.Text(FontAwesomeIcon.Check.ToIconString());
+                ImGui.PopFont();
+                ImGui.SameLine();
+                ImGuiHelpers.SafeTextColoredWrapped(ImGuiColors.HealerGreen, "No validation issues found in this plugin!");
+            }
+            else
+            {
+                var numValidProblems = problems.Count(
+                    problem => devPlugin.DismissedValidationProblems.All(name => name != problem.GetType().Name));
+                var shouldBother = numValidProblems > 0;
+                var validationIssuesText = shouldBother ?
+                    $"Found {problems.Count} validation issue{(problems.Count > 1 ? "s" : string.Empty)} in this plugin!" :
+                    $"{problems.Count} dismissed validation issue{(problems.Count > 1 ? "s" : string.Empty)} in this plugin.";
+                
+                using var col = ImRaii.PushColor(ImGuiCol.Text, shouldBother ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudGrey);
+                using var tree = ImRaii.TreeNode($"{validationIssuesText}###validationIssueCollapsible");
+                if (tree.Success)
+                {
+                    foreach (var problem in problems)
+                    {
+                        var thisProblemIsDismissed = devPlugin.DismissedValidationProblems.Contains(problem.GetType().Name);
+
+                        if (!thisProblemIsDismissed)
+                        {
+                            using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudWhite))
+                            {
+                                if (ImGuiComponents.IconButton(
+                                        $"##dismissValidationIssue{problem.GetType().Name}",
+                                        FontAwesomeIcon.TimesCircle))
+                                {
+                                    devPlugin.DismissedValidationProblems.Add(problem.GetType().Name);
+                                    Service<DalamudConfiguration>.Get().QueueSave();
+                                }
+                            
+                                if (ImGui.IsItemHovered())
+                                {
+                                    ImGui.SetTooltip("Dismiss this issue");
+                                }
+                            }
+
+                            ImGui.SameLine();
+                        }
+
+                        var iconColor = problem.Severity switch
+                        {
+                            PluginValidator.ValidationSeverity.Fatal => ImGuiColors.DalamudRed,
+                            PluginValidator.ValidationSeverity.Warning => ImGuiColors.DalamudOrange,
+                            PluginValidator.ValidationSeverity.Information => ImGuiColors.TankBlue,
+                            _ => ImGuiColors.DalamudGrey,
+                        };
+
+                        using (ImRaii.PushColor(ImGuiCol.Text, iconColor))
+                        using (ImRaii.PushFont(InterfaceManager.IconFont))
+                        {
+                            switch (problem.Severity)
+                            {
+                                case PluginValidator.ValidationSeverity.Fatal:
+                                    ImGui.Text(FontAwesomeIcon.TimesCircle.ToIconString());
+                                    break;
+                                case PluginValidator.ValidationSeverity.Warning:
+                                    ImGui.Text(FontAwesomeIcon.ExclamationTriangle.ToIconString());
+                                    break;
+                                case PluginValidator.ValidationSeverity.Information:
+                                    ImGui.Text(FontAwesomeIcon.InfoCircle.ToIconString());
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                            
+                        ImGui.SameLine();
+
+                        using (ImRaii.PushColor(ImGuiCol.Text, thisProblemIsDismissed ? ImGuiColors.DalamudGrey : ImGuiColors.DalamudWhite))
+                        {
+                            ImGuiHelpers.SafeTextWrapped(problem.GetLocalizedDescription());
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -3760,7 +3862,7 @@ internal class PluginInstallerWindow : Window, IDisposable
 
         public static string FeedbackModal_ContactInformationRequired => Loc.Localize("InstallerFeedbackContactInfoRequired", "Contact information has not been provided. We require contact information to respond to questions, or to request additional information to troubleshoot problems.");
 
-        public static string FeedbackModal_ContactInformationDiscordButton => Loc.Localize("ContactInformationDiscordButton", "Join Goat Place Discord");
+        public static string FeedbackModal_ContactInformationDiscordButton => Loc.Localize("ContactInformationDiscordButton", "Join XIVLauncher & Dalamud Discord");
 
         public static string FeedbackModal_ContactInformationDiscordUrl => Loc.Localize("ContactInformationDiscordUrl", "https://goat.place/");
 
