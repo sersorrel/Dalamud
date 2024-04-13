@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Hooking;
@@ -30,7 +30,7 @@ internal unsafe class AddonLifecycleReceiveEventListener : IDisposable
     {
         this.AddonLifecycle = service;
         this.AddonNames = new List<string> { addonName };
-        this.Hook = Hook<AddonReceiveEventDelegate>.FromAddress(receiveEventAddress, this.OnReceiveEvent);
+        this.Hook = Hook<AddonReceiveEventDelegate>.FromAddress(receiveEventAddress, this.OnReceiveEvent, true);
     }
 
     /// <summary>
