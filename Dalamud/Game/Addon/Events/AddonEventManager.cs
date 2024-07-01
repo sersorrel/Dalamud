@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
@@ -50,7 +50,7 @@ internal unsafe class AddonEventManager : IInternalDisposableService
         
         this.cursorOverride = null;
 
-        this.onUpdateCursor = Hook<UpdateCursorDelegate>.FromAddress(this.address.UpdateCursor, this.UpdateCursorDetour);
+        this.onUpdateCursor = Hook<UpdateCursorDelegate>.FromAddress(this.address.UpdateCursor, this.UpdateCursorDetour, true);
 
         this.finalizeEventListener = new AddonLifecycleEventListener(AddonEvent.PreFinalize, string.Empty, this.OnAddonFinalize);
         this.addonLifecycle.RegisterListener(this.finalizeEventListener);

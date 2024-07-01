@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Hooking;
@@ -57,7 +57,7 @@ internal unsafe class AddonLifecycleReceiveEventListener : IDisposable
     /// </summary>
     public void TryEnable()
     {
-        this.Hook ??= Hook<AtkUnitBase.Delegates.ReceiveEvent>.FromAddress(this.FunctionAddress, this.OnReceiveEvent);
+        this.Hook ??= Hook<AtkUnitBase.Delegates.ReceiveEvent>.FromAddress(this.FunctionAddress, this.OnReceiveEvent, true);
         this.Hook?.Enable();
     }
     
