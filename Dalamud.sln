@@ -68,6 +68,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cimplot", "external\cimplot
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cimguizmo", "external\cimguizmo\cimguizmo.vcxproj", "{F258347D-31BE-4605-98CE-40E43BDF6F9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Hooks", "goatcorp.Reloaded.Hooks\source\Reloaded.Hooks\Reloaded.Hooks.csproj", "{7F06B163-CC1B-49FC-828D-2501075F2616}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Hooks.Definitions", "goatcorp.Reloaded.Hooks\source\Reloaded.Hooks.Definitions\Reloaded.Hooks.Definitions.csproj", "{4E1302B8-1D5A-4E44-BE82-F5250FD3AEEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -154,6 +158,14 @@ Global
 		{F258347D-31BE-4605-98CE-40E43BDF6F9D}.Debug|Any CPU.Build.0 = Debug|x64
 		{F258347D-31BE-4605-98CE-40E43BDF6F9D}.Release|Any CPU.ActiveCfg = Release|x64
 		{F258347D-31BE-4605-98CE-40E43BDF6F9D}.Release|Any CPU.Build.0 = Release|x64
+		{7F06B163-CC1B-49FC-828D-2501075F2616}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{7F06B163-CC1B-49FC-828D-2501075F2616}.Debug|Any CPU.Build.0 = Debug|x64
+		{7F06B163-CC1B-49FC-828D-2501075F2616}.Release|Any CPU.ActiveCfg = Release|x64
+		{7F06B163-CC1B-49FC-828D-2501075F2616}.Release|Any CPU.Build.0 = Release|x64
+		{4E1302B8-1D5A-4E44-BE82-F5250FD3AEEA}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{4E1302B8-1D5A-4E44-BE82-F5250FD3AEEA}.Debug|Any CPU.Build.0 = Debug|x64
+		{4E1302B8-1D5A-4E44-BE82-F5250FD3AEEA}.Release|Any CPU.ActiveCfg = Release|x64
+		{4E1302B8-1D5A-4E44-BE82-F5250FD3AEEA}.Release|Any CPU.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

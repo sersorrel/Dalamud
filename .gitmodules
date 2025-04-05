@@ -19,3 +19,7 @@
 [submodule "lib/cimguizmo"]
 	path = lib/cimguizmo
 	url = https://github.com/goatcorp/gc-cimguizmo
+[submodule "goatcorp.Reloaded.Hooks"]
+	path = goatcorp.Reloaded.Hooks
+	url = https://github.com/WorkingRobot/goatcorp.Reloaded.Hooks.git
+	branch = concurrency
