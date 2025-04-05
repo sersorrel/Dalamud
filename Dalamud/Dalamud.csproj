@@ -93,6 +93,8 @@
         <ProjectReference Include="..\lib\ImGuiScene\deps\ImGui.NET\src\ImGui.NET-472\ImGui.NET-472.csproj" />
         <ProjectReference Include="..\lib\ImGuiScene\deps\SDL2-CS\SDL2-CS.csproj" />
         <ProjectReference Include="..\lib\ImGuiScene\ImGuiScene\ImGuiScene.csproj" />
+        <ProjectReference Include="..\goatcorp.Reloaded.Hooks\source\Reloaded.Hooks\Reloaded.Hooks.csproj" />
+        <ProjectReference Include="..\goatcorp.Reloaded.Hooks\source\Reloaded.Hooks.Definitions\Reloaded.Hooks.Definitions.csproj" />
     </ItemGroup>
 
     <ItemGroup>
